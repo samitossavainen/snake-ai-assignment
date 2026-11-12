@@ -15,6 +15,7 @@
 
     <h1>Snake</h1>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <button id="restartButton">Restart</button>
     <p id="info"></p>
 
     <script>
@@ -122,7 +123,7 @@
             drawGame();
         };
 
-        const gameLoop = setInterval(moveSnake, 200);
+        let gameLoop = setInterval(moveSnake, 200);
 
         // Step 2: Keyboard controls
         document.addEventListener("keydown", (event) => {
@@ -140,6 +141,36 @@
                     direction = { x: 0, y: -1 };
                     break;
             }
+        });
+        // Restart button click event
+        document.getElementById("restartButton").addEventListener("click", () => {
+            // Stop the existing game loop
+            clearInterval(gameLoop);
+
+            // Reset snake to its starting position
+            snake = [
+                { x: 10, y: 10 },
+                { x: 9, y: 10 },
+                { x: 8, y: 10 }
+            ];
+
+            // Reset direction
+            direction = { x: 1, y: 0 };
+
+            // Reset food position
+            food = { x: 15, y: 15 };
+
+            // Reset score
+            score = 0;
+
+            // Clear info message
+            document.getElementById("info").textContent = "";
+
+            // Redraw the game board
+            drawGame();
+
+            // Start a new game loop
+            gameLoop = setInterval(moveSnake, 200);
         });
 
         // Step 3: Eating and growing
