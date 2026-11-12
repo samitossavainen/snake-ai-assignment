@@ -77,6 +77,22 @@
                 x: head.x + direction.x,
                 y: head.y + direction.y
             };
+            // Check for collisions with walls or the snake itself
+            const hitWall =
+                newHead.x < 0 ||
+                newHead.x >= tileCount ||
+                newHead.y < 0 ||
+                newHead.y >= tileCount;
+
+            const hitSelf = snake.some(segment =>
+                segment.x === newHead.x && segment.y === newHead.y
+            );
+
+            if (hitWall || hitSelf) {
+                clearInterval(gameLoop);
+                document.getElementById("info").textContent = "Game Over! Score: " + score;
+                return;
+            }
 
             // Add the new head to the beginning of the array
             snake.unshift(newHead);
@@ -106,7 +122,7 @@
             drawGame();
         };
 
-        setInterval(moveSnake, 200);
+        const gameLoop = setInterval(moveSnake, 200);
 
         // Step 2: Keyboard controls
         document.addEventListener("keydown", (event) => {
